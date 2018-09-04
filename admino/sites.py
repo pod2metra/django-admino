@@ -2,8 +2,6 @@ import json
 from functools import update_wrapper
 from urllib.parse import urlencode
 
-from admino.utils import import_from_string
-
 from django import http
 from django.conf import settings
 from django.conf.urls import url, include
@@ -22,7 +20,7 @@ from django.contrib.admin import (
 from .serializers import ModelAdminSerializer
 
 
-class AdminoMixin(DjangoModelAdmin):
+class ModelAdmin(DjangoModelAdmin):
     HTTP_METHOD_NAMES = ['GET', 'POST', 'PUT', 'DELETE']
 
     def api_urls(self):
@@ -224,10 +222,6 @@ class AdminoMixin(DjangoModelAdmin):
         )
 
 
-class ModelAdmino(AdminoMixin):
-    admin_type = "admino"
-
-
 class AdminoSite(DjangoAdminSite):
 
     def __init__(self, django_site, name='admino'):
@@ -240,13 +234,9 @@ class AdminoSite(DjangoAdminSite):
     def activated(self):
         django_admin_registered_apps = self.django_site._registry
         for model, admin_obj in django_admin_registered_apps.items():
-            mixin_class = AdminoMixin
-            if hasattr(settings, "ADMINO_MIXIN_CLASS"):
-                module_path = getattr(settings, "ADMINO_MIXIN_CLASS")
-                mixin_class = import_from_string(module_path)
             self._registry[model] = type(
                 "ModelAdmino",
-                (mixin_class, ),
+                (ModelAdmin, DjangoModelAdmin),
                 {"admin_type": "admino"}
             )(
                 model,
