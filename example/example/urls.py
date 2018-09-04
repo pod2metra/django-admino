@@ -9,5 +9,4 @@ admino.site.activated()
 
 urlpatterns = [
     url(r'^admin/', admino.site.urls),
-    url(r'^django-admin/', django_admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
