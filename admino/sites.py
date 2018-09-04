@@ -178,7 +178,7 @@ class AdminoMixin(DjangoModelAdmin):
         data = {k: v for k, v in data.items()
                 if k in set(fields or self.get_fields(request))}
         data["admin_detail_url"] = str(
-            reverse("admin:{}_{}_change".format(*info), args=(obj.id,))
+            reverse("admin:{}_{}_change".format(*info), args=(obj.pk,))
         )
         return data
 
