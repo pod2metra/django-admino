@@ -167,7 +167,7 @@ class ModelAdminMixin:
             if hasattr(self, field):
                 field_method = getattr(self, field)
                 if callable(field_method):
-                    data[field] = field_method()
+                    data[field] = field_method(obj)
                 else:
                     data[field] = field_method
 
