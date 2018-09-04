@@ -15,12 +15,11 @@ from django.contrib.admin import actions
 from django.contrib.admin import site as django_site
 from django.contrib.admin import (
         AdminSite as DjangoAdminSite,
-        ModelAdmin as DjangoModelAdmin,
         autodiscover as django_admin_autodiscover)
 from .serializers import ModelAdminSerializer
 
 
-class ModelAdmin(DjangoModelAdmin):
+class ModelAdminMixin:
     HTTP_METHOD_NAMES = ['GET', 'POST', 'PUT', 'DELETE']
 
     def api_urls(self):
@@ -236,8 +235,8 @@ class AdminoSite(DjangoAdminSite):
         for model, admin_obj in django_admin_registered_apps.items():
             self._registry[model] = type(
                 "ModelAdmino",
-                (ModelAdmin, DjangoModelAdmin),
-                {"admin_type": "admino"}
+                (ModelAdminMixin, admin_obj.__class__),
+                {}
             )(
                 model,
                 self
