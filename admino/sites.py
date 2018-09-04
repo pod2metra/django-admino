@@ -39,12 +39,12 @@ class AdminoMixin(DjangoModelAdmin):
             url(r'^$',
                 wrap(self.admin_site.admin_view(self.dispatch)),
                 name='%s_%s_api_list' % info),
-            url(r'^(?P<pk>[-\d]+)/$',
-                wrap(self.admin_site.admin_view(self.dispatch)),
-                name='%s_%s_api_detail' % info),
             url(r'^meta/$',
                 wrap(self.admin_site.admin_view(self.api_meta_view)),
                 name='%s_%s_api_meta' % info),
+            url(r'^(?P<pk>[-\w]+)/$',
+                wrap(self.admin_site.admin_view(self.dispatch)),
+                name='%s_%s_api_detail' % info),
         ]
         return urlpatterns
 
