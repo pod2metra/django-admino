@@ -1,17 +1,17 @@
 from admino.sites import ModelAdmino
 from django.contrib import admin
-from models import Author, BookType, Book
+from .models import Author, BookType, Book
 
 
-class AuthorAdmin(admin.ModelAdmin):
+class AuthorAdmin(ModelAdmino):
     list_display = ("name", "creation_date")
 
 
-class BookTypeAdmin(admin.ModelAdmin):
+class BookTypeAdmin(ModelAdmino):
     list_display = ("name", "creation_date")
 
 
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(ModelAdmino):
     admin_type = "admino"
     list_display = ("name", "author", "title")
     list_display_links = ("name", "author")
@@ -23,7 +23,6 @@ class BookAdmin(admin.ModelAdmin):
 
 class TestAdminoClass(ModelAdmino):
     def api_get(self, request, *args, **kwargs):
-        print "hello"
         return super(TestAdminoClass, self).api_get(request, *args, **kwargs)
 
 
